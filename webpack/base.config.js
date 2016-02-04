@@ -1,9 +1,9 @@
 module.exports = {
   module: {
     loaders: [{
-      test: /\.js$/,
+      test: /\.ts$/,
       exclude: /(bower_components|node_modules)/,
-      loader: 'babel',
+      loader: 'ts-loader',
     }],
   },
 };
