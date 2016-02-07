@@ -1,13 +1,23 @@
 {
   "compilerOptions": {
+  "module": "commonjs",
     "target": "es5",
     "sourceMap": true,
-    "module": "commonjs",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true
   },
-  "files": [
-    "src/main.ts"
+  "formatCodeOptions": {
+    "indentSize": 2,
+    "tabSize": 2,
+    "newLineCharacter": "\n",
+    "convertTabsToSpaces": true
+  },
+  "atom": {
+    "formatOnSave": true
+  },
+  "filesGlob": [
+    "typings/**/*.ts",
+    "src/**/*.ts"
   ]
 }
