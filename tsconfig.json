@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-  "module": "commonjs",
+    "module": "commonjs",
     "target": "es5",
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true
@@ -13,11 +13,15 @@
     "newLineCharacter": "\n",
     "convertTabsToSpaces": true
   },
+  "compileOnSave": false,
+  "buildOnSave": false,
   "atom": {
     "formatOnSave": true
   },
   "filesGlob": [
-    "typings/**/*.ts",
-    "src/**/*.ts"
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

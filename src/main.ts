@@ -1,6 +1,7 @@
-/// <reference path="CreepTypes/Builder.ts" />
+/// <reference path="./screeps/screeps.lib.ts"/>
+/// <reference path="./screeps/screeps.d.ts"/>
+declare let module: any;
 
-
-export function loop() {
+module.export.loop = function() {
 
 }

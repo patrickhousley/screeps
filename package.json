@@ -4,12 +4,8 @@
   "description": "Personal screeps scripts.",
   "main": "index.js",
   "scripts": {
-    "build": "npm run clean && npm run build:dev && npm run build:prd",
-    "build:dev": "webpack ./src/main.ts ./dist/screeps.js --config ./webpack/dev.config.js",
-    "build:prd": "webpack ./src/main.ts ./dist/screeps.min.js --config ./webpack/prd.config.js",
-    "prepublish": "npm run build",
-    "clean": "rimraf ./dist ./build",
-    "lint": "eslint src"
+    "build": "npm run clean && tsc --outFile ./dist/screeps.js && uglifyjs ./dist/screeps.js -mc > ./dist/screeps.min.js",
+    "clean": "rimraf ./dist ./build"
   },
   "repository": {
     "type": "git",
@@ -25,10 +21,6 @@
   },
   "homepage": "https://github.com/patrickhousley/screeps#readme",
   "devDependencies": {
-    "eslint": "^1.10.3",
-    "rimraf": "^2.5.1",
-    "ts-loader": "^0.8.0",
-    "typescript": "^1.7.5",
-    "webpack": "^1.12.12"
+    "rimraf": "^2.5.1"
   }
 }
