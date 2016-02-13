@@ -566,6 +566,63 @@ declare module Screeps {
      */
     ticksToLive: number;
   }
+  
+  /**
+   * A site of a structure which is currently under construction. A construction site can be created using
+   * the 'Construct' button at the left of the game field or the Room.createConstructionSite() method. To build
+   * a structure on the construction site, give a worker creep some amount of energy and perform Creep.build() action.
+   * http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite
+   */
+  interface ConstructionSite {
+    /**
+     * A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.
+     * http://support.screeps.com/hc/en-us/articles/203016382-Game#getObjectById
+     */
+    id: string;
+    
+    /**
+     * Whether this is your own construction site.
+     */
+    my: boolean;
+    
+    /**
+     * An object with the structure’s owner info.
+     */
+    owner: Owner;
+    
+    /**
+     * An object representing the position of this structure in the room.
+     */
+    pos: RoomPosition;
+    
+    /**
+     * The current construction progress.
+     */
+    progress: number;
+    
+    /**
+     * The total construction progress needed for the structure to be built.
+     */
+    progressTotal: number;
+    
+    /**
+     * The link to the Room object of this structure.
+     */
+    room: Room;
+    
+    /**
+     * One of the STRUCTURE_* constants.
+     */
+    structureType: StructureType;
+    
+    /**
+     * Remove the construction site.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this construction site.
+     */
+    remove(): ResultCode;
+  }
 
   interface Creep {
 
