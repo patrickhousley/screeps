@@ -624,8 +624,199 @@ declare module Screeps {
     remove(): ResultCode;
   }
 
+  /**
+   * Creeps are your units. Creeps can move, harvest energy, construct structures,
+   * attack another creeps, and perform other actions. Each creep consists of up to 50 body parts
+   */
   interface Creep {
-
+    /**
+     * An array describing the creep’s body.
+     */
+    body: Array<BodyPart>;
+    
+    /**
+     * An object with the creep's cargo contents.
+     */
+    carry: Store;
+    
+    /**
+     * The total amount of resources the creep can carry.
+     */
+    carryCapacity: number;
+    
+    /**
+     * The movement fatigue indicator. If it is greater than zero, the creep cannot move.
+     */
+    fatigue: number;
+    
+    /**
+     * The current amount of hit points of the creep.
+     */
+    hits: number;
+    
+    /**
+     * The maximum amount of hit points of the creep.
+     */
+    hitsMax: number;
+    
+    /**
+     * A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.
+     * http://support.screeps.com/hc/en-us/articles/203016382-Game#getObjectById
+     */
+    id: string;
+    
+    /**
+     * A shorthand to Memory.creeps[creep.name]. You can use it for quick access the creep’s specific memory data object.
+     * Note: you can't access the memory property of the creep object which has been just scheduled to spawn, but you still
+     * can write its memory like that
+     */
+    memory: Object;
+    
+    /**
+     * Whether it is your creep or foe.
+     */
+    my: boolean;
+    
+    /**
+     * Creep’s name. You can choose the name while creating a new creep, and it cannot be changed later. This name is a hash key
+     * to access the creep via the Game.creeps object.
+     */
+    name: string;
+    
+    /**
+     * An object with the creep’s owner info.
+     */
+    owner: Owner;
+    
+    /**
+     * An object representing the position of this creep in a room.
+     */
+    pos: RoomPosition;
+    
+    /**
+     * The link to the Room object of this creep.
+     */
+    room: Room;
+    
+    /**
+     * Whether this creep is still being spawned.
+     */
+    spawning: boolean;
+    
+    /**
+     * The remaining amount of game ticks after which the creep will die.
+     */
+    ticksToLive: number;
+    
+    /**
+     * Attack another creep or structure in a short-ranged attack. Requires the ATTACK body part. If the target is
+     * inside a rampart, then the rampart is attacked instead. The target has to be at adjacent square to the creep.
+     * If the target is a creep with ATTACK body parts and is not inside a rampart, it will automatically hit back
+     * at the attacker.
+     * @param target The target object to be attacked.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid attackable object.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_NO_BODYPART => -12 : There are no ATTACK body parts in this creep’s body.
+     */
+    attack(target: Creep): ResultCode;
+    attack(target: Structure): ResultCode;
+    
+    /**
+     * Build a structure at the target construction site using carried energy. Requires WORK and CARRY body parts. The
+     * target has to be within 3 squares range of the creep.
+     * @param target The target construction site to be built.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.\
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_NOT_ENOUGH_RESOURCES => -6 : The creep does not have any carried energy.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid construction site object or the structure cannot be built
+     * here (probably because of a creep at the same square).
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_NO_BODYPART => -12 : There are no WORK body parts in this creep’s body.
+     * ERR_RCL_NOT_ENOUGH => -14 : The Room Controller Level is not enough. Learn more
+     */
+    build(target: ConstructionSite): ResultCode;
+    
+    /**
+     * Cancel the order given during the current game tick.
+     * @param methodName The name of a creep's method to be cancelled.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been cancelled successfully.
+     * ERR_NOT_FOUND => -5 : The order with the specified name is not found.
+     */
+    cancelOrder(methodName: string): ResultCode;
+    
+    /**
+     * Requires the CLAIM body part. If applied to a neutral controller, claims it under your control. If applied to a
+     * hostile controller, decreases its downgrade or reservation timer depending on the CLAIM body parts count. The
+     * target has to be at adjacent square to the creep.
+     * @param target The target controller object.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid neutral controller object.
+     * ERR_FULL => -8 : You cannot claim more than 3 rooms in the Novice Area.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_NO_BODYPART => -12 : There are no CLAIM body parts in this creep’s body.
+     * ERR_GCL_NOT_ENOUGH => -15 : Your Global Control Level is not enough. Learn more
+     */
+    claimController(target: Controller): ResultCode;
+    
+    /**
+     * Dismantles any (even hostile) structure returning 50% of the energy spent on its repair. Requires the WORK body
+     * part. If the creep has an empty CARRY body part, the energy is put into it; otherwise it is dropped on the ground.
+     * The target has to be at adjacent square to the creep.
+     * @param target The target structure.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.\
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid creep object.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_NO_BODYPART => -12 : There are no WORK body parts in this creep’s body.
+     */
+    dismantle(target: Structure): ResultCode;
+    
+    /**
+     * Drop this resource on the ground.
+     * @param resopurceType One of the RESOURCE_* constants.
+     * @param amount The amount of resource units to be dropped. If omitted, all the available carried amount is used.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_NOT_ENOUGH_RESOURCES => -6 : The creep does not have the given amount of energy.
+     */
+    drop(resourceType: ResourceType): ResultCode;
+    drop(resourceType: ResourceType, amount: number): ResultCode;
+    
+    /**
+     * An alias for creep.drop(RESOURCE_ENERGY, amount). This method is deprecated.
+     * @param resopurceType One of the RESOURCE_* constants.
+     * @param amount The amount of resource units to be dropped. If omitted, all the available carried amount is used.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_NOT_ENOUGH_RESOURCES => -6 : The creep does not have the given amount of energy.
+     */
+    dropEnergy(): ResultCode;
+    dropEnergy(amount: number): ResultCode;
+    
+    /**
+     * Get the quantity of live body parts of the given type. Fully damaged parts do not count.
+     * @param type A body part type.
+     * @returns A number representing the quantity of body parts.
+     */
+    getActiveBodyparts(type: BodyPart): number;
+    
+    
   }
 
   interface Flag {
