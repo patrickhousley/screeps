@@ -2,7 +2,7 @@
   "name": "screeps",
   "version": "1.0.0",
   "description": "Personal screeps scripts.",
-  "main": "index.js",
+  "main": "src/main.ts",
   "scripts": {
     "build": "npm run clean && tsc --outFile ./dist/screeps.js && uglifyjs ./dist/screeps.js -mc > ./dist/screeps.min.js",
     "clean": "rimraf ./dist ./build"
