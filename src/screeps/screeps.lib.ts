@@ -53,16 +53,18 @@ module Screeps {
   }
   
   export class BodyPart {
-    value: string;
+    type: string;
     cost: number;
+    hits: number;
 
-    constructor(value: string, cost: number) {
-      this.value = value;
+    constructor(type: string, cost: number) {
+      this.type = type;
       this.cost = cost;
+      this.hits = 100; // I think this is the default for all body part.
     }
 
     toString(): string {
-      return this.value;
+      return this.type;
     }
     
     /**
