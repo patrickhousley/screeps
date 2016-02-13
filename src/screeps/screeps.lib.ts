@@ -54,22 +54,72 @@ module Screeps {
   
   export class BodyPart {
     value: string;
+    cost: number;
 
-    constructor(value: string) {
+    constructor(value: string, cost: number) {
       this.value = value;
+      this.cost = cost;
     }
 
     toString(): string {
       return this.value;
     }
     
-    static MOVE = new BodyPart('move');
-    static WORK = new BodyPart('work');
-    static CARRY = new BodyPart('carry');
-    static ATTACK = new BodyPart('attack');
-    static RANGED_ATTACK = new BodyPart('ranged_attack');
-    static TOUGH = new BodyPart('tough');
-    static HEAL = new BodyPart('heal');
+    /**
+     * Moves a creep 1 square per tick per 1 other body part.
+     * Cost: 50
+     */
+    static MOVE = new BodyPart('move', 50);
+    
+    /**
+     * Harvests 2 energy units from a source per tick.
+     * Builds a structure for 5 energy units per tick.
+     * Repairs a structure for 100 hits per tick consuming 1 energy unit per tick.
+     * Dismantles a structure for 100 hits per tick returning 0.5 energy unit per tick.
+     * Upgrades a controller for 1 energy unit per tick.
+     * Cost: 100
+     */
+    static WORK = new BodyPart('work', 100);
+    
+    /**
+     * Can contain up to 50 resource units.
+     * Cost: 50
+     */
+    static CARRY = new BodyPart('carry', 50);
+    
+    /**
+     * Attacks another creep/structure with 30 hits per tick in a short-ranged attack.
+     * Cost: 80
+     */
+    static ATTACK = new BodyPart('attack', 80);
+    
+    /**
+     * Attacks another single creep/structure with 10 hits per tick in a long-range attack up to 3 squares long.
+     * Attacks all hostile creeps/structures within 3 squares range with 1-4-10 hits (depending on the range).
+     * Cost: 150
+     */
+    static RANGED_ATTACK = new BodyPart('ranged_attack', 150);
+    
+    /**
+     * No effect, just additional hit points to the creep's body.
+     * Cost: 10
+     */
+    static TOUGH = new BodyPart('tough', 10);
+    
+    /**
+     * Heals self or another creep restoring 12 hits per tick in short range or 4 hits per tick at a distance.
+     * Cost: 250
+     */
+    static HEAL = new BodyPart('heal', 250);
+    
+    /**
+     * Claims a neutral room controller.
+     * Reserves a neutral room controller for 1 tick per body part.
+     * Attacks a hostile room controller downgrade or reservation timer with 1 tick per 5 body parts.
+     * A creep with this body part will have a reduced life time of 500 ticks and cannot be renewed.
+     * Cost: 600
+     */
+    static CLAIM = new BodyPart('claim', 600);
   }
   
   export class StructureType {
