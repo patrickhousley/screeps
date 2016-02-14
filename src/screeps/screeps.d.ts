@@ -87,7 +87,7 @@ declare module Screeps {
    * Global game object all game objects decend from such as roads and extensions.
    * http://support.screeps.com/hc/en-us/articles/203079221-Structure
    */
-  interface Structure {
+  interface Structure extends RoomPositionContainer {
     /**
      * The current amount of hit points of the structure.
      */
@@ -114,11 +114,6 @@ declare module Screeps {
      * An object with the structure’s owner info (if present).
      */
     owner: Owner;
-
-    /**
-     * An object representing the position of this structure in the room.
-     */
-    pos: RoomPosition;
 
     /**
      * The link to the Room object. May not be available in case a flag is placed
@@ -565,7 +560,7 @@ declare module Screeps {
    * a structure on the construction site, give a worker creep some amount of energy and perform Creep.build() action.
    * http://support.screeps.com/hc/en-us/articles/203016342-ConstructionSite
    */
-  interface ConstructionSite {
+  interface ConstructionSite extends RoomPositionContainer {
     /**
      * A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.
      * http://support.screeps.com/hc/en-us/articles/203016382-Game#getObjectById
@@ -581,11 +576,6 @@ declare module Screeps {
      * An object with the structure’s owner info.
      */
     owner: Owner;
-
-    /**
-     * An object representing the position of this structure in the room.
-     */
-    pos: RoomPosition;
 
     /**
      * The current construction progress.
@@ -620,7 +610,7 @@ declare module Screeps {
    * Creeps are your units. Creeps can move, harvest energy, construct structures,
    * attack another creeps, and perform other actions. Each creep consists of up to 50 body parts
    */
-  interface Creep {
+  interface Creep extends RoomPositionContainer {
     /**
      * An array describing the creep’s body.
      */
@@ -679,11 +669,6 @@ declare module Screeps {
      * An object with the creep’s owner info.
      */
     owner: Owner;
-
-    /**
-     * An object representing the position of this creep in a room.
-     */
-    pos: RoomPosition;
 
     /**
      * The link to the Room object of this creep.
@@ -1054,7 +1039,7 @@ declare module Screeps {
   /**
    * A flag. Flags can be used to mark particular spots in a room. Flags are visible to their owners only.
    */
-  interface Flag {
+  interface Flag extends RoomPositionContainer {
     /**
      * A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.
      */
@@ -1075,11 +1060,6 @@ declare module Screeps {
      * hash key to access the spawn via the Game.flags object.
      */
     name: string;
-
-    /**
-     * An object representing the position of this structure in the room.
-     */
-    pos: RoomPosition;
 
     /**
      * The link to the Room object. May not be available in case a flag is placed in a room which you do not have access to.
@@ -1117,7 +1097,7 @@ declare module Screeps {
      * ERR_INVALID_TARGET => -7 : The target provided is invalid.
      */
     setPosition(x: number, y: number): ResultCode;
-    setPosition(pos: RoomPosition): ResultCode;
+    setPosition(pos: RoomPosition|RoomPositionContainer): ResultCode;
   }
 
   /**
@@ -1184,7 +1164,7 @@ declare module Screeps {
    * A dropped piece of resource. It will decay after a while if not picked up. Dropped resource pile decays
    * for ceil(amount/1000) units per tick. 
    */
-  interface Resource {
+  interface Resource extends RoomPositionContainer {
     /**
      * The amount of resource units containing.
      */
@@ -1195,11 +1175,6 @@ declare module Screeps {
      * its id.
      */
     id: string;
-
-    /**
-     * An object representing the position in the room.
-     */
-    pos: RoomPosition;
 
     /**
      * One of the RESOURCE_* constants.
@@ -1292,7 +1267,7 @@ declare module Screeps {
      * ERR_RCL_NOT_ENOUGH => -14 : The Room Controller Level is not enough. Learn more
      */
     createConstructionSite(x: number, y: number, structureType: StructureType): ResultCode;
-    createConstructionSite(pos: RoomPosition, structureType: StructureType): ResultCode;
+    createConstructionSite(pos: RoomPosition|RoomPositionContainer, structureType: StructureType): ResultCode;
     
     /**
      * Create new Flag at the specified location.
@@ -1307,7 +1282,7 @@ declare module Screeps {
      * ERR_INVALID_ARGS => -10 : The location or the color constant is incorrect.
      */
     createFlag(x: number, y: number, name?: string, color?: Color): string|ResultCode;
-    createFlag(pos: RoomPosition, name?: string, color?: Color): string|ResultCode;
+    createFlag(pos: RoomPosition|RoomPositionContainer, name?: string, color?: Color): string|ResultCode;
     
     /**
      * Find all objects of the specified type in the room.
@@ -1389,16 +1364,137 @@ declare module Screeps {
     lookForAtArea(type: LookForType, top: number, left: number, bottom: number, right: number): Object;
   }
 
+  /**
+   * An object representing the specified position in the room. Every object in the room contains RoomPosition
+   * as the pos property. The position object of a custom location can be obtained using the
+   * Room.getPositionAt() method or using the constructor.
+   */
   interface RoomPosition {
-
+    /**
+     * You can create new RoomPosition object using its constructor.
+     * @param x X position in the room.
+     * @param y Y position in the room.
+     * @param roomName The room name.
+     */
+    constructor(x: number, y: number, roomName: string): RoomPosition;
+    
+    /**
+     * The name of the room.
+     */
+    roomName: string;
+    
+    /**
+     * X position in the room.
+     */
+    x: number;
+    
+    /**
+     * Y position in the room.
+     */
+    y: number;
+    
+    
   }
 
-  interface Source {
-
+  /**
+   * An energy source object. Can be harvested by creeps with a WORK body part.
+   */
+  interface Source extends RoomPositionContainer {
+    /**
+     * The remaining amount of energy.
+     */
+    energy: number;
+    
+    /**
+     * The total amount of energy in the source.
+     */
+    energyCapacity: number;
+    
+    /**
+     * A unique object identificator. You can use Game.getObjectById method to retrieve
+     * an object instance by its id.
+     */
+    id: string;
+    
+    /**
+     * The link to the Room object of this structure.
+     */
+    room: Room;
+    
+    /**
+     * The remaining time after which the source will be refilled.
+     */
+    ticksToRegeneration: number;
   }
 
-  interface Spawn extends Structure {
-
+  /**
+   * Spawns are your colony centers. You can transfer energy into it and create new creeps
+   * using createCreep() method. 
+   */
+  interface Spawn extends Structure,RoomPositionContainer {
+    /**
+     * The amount of energy containing in the spawn.
+     */
+    energy: number;
+    
+    /**
+     * The total amount of energy the spawn can contain.
+     */
+    energyCapacity: number;
+    
+    /**
+     * The current amount of hit points of the spawn.
+     */
+    hits: number;
+    
+    /**
+     * The maximum amount of hit points of the spawn.
+     */
+    hitsMax: number;
+    
+    /**
+     * A unique object identificator. You can use Game.getObjectById method to retrieve an
+     * object instance by its id.
+     */
+    id: string;
+    
+    /**
+     * A shorthand to Memory.spawns[spawn.name]. You can use it for quick access the spawn’s
+     * specific memory data object.
+     */
+    memory: Object;
+    
+    /**
+     * Whether it is your spawn or foe.
+     */
+    my: boolean;
+    
+    /**
+     * Spawn’s name. You choose the name upon creating a new spawn, and it cannot be changed
+     * later. This name is a hash key to access the spawn via the Game.spawns object.
+     */
+    name: string;
+    
+    /**
+     * An object with the spawn’s owner info.
+     */
+    owned: Owner;
+    
+    /**
+     * The link to the Room object of this spawn.
+     */
+    room: Room;
+    
+    /**
+     * Always equal to ‘spawn’.
+     */
+    structureType: StructureType;
+    
+    /**
+     * If the spawn is in process of spawning a new creep, this object
+     * will contain the new creep’s information, or null otherwise.
+     */
+    spawning: SpawningCreep;
   }
 
   /**
@@ -1531,6 +1627,36 @@ declare module Screeps {
      * Number of the next wave.
      */
     wave: number;
+  }
+  
+  /**
+   * Contains information about a spawning creep.
+   */
+  interface SpawningCreep {
+    /**
+     * The name of a new creep.
+     */
+    name: string;
+    
+    /**
+     * Time needed in total to complete the spawning.
+     */
+    needTime: number;
+    
+    /**
+     * Remaining time to go.
+     */
+    remainingTime: number;
+  }
+  
+  /**
+   * Interface for all objects that contains a room position.
+   */
+  interface RoomPositionContainer {
+    /**
+     * An object representing the position of this spawn in a room.
+     */
+    pos: RoomPosition;
   }
   
   /**
