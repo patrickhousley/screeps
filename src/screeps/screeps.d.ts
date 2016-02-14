@@ -223,8 +223,7 @@ declare module Screeps {
      * ERR_FULL => -8 : The target creep can not carry the given amount of energy.
      * ERR_NOT_IN_RANGE => -9 : The target creep is too far away.
      */
-    transferEnergy(target: Creep): ResultCode;
-    transferEnergy(target: Creep, amount: number): ResultCode;
+    transferEnergy(target: Creep, amount?: number): ResultCode;
   }
 
   /**
@@ -284,10 +283,7 @@ declare module Screeps {
      * ERR_TIRED => -11 : The link is still cooling down.
      * ERR_RCL_NOT_ENOUGH : -14 => The Room Controller Level is not enough to use this link.
      */
-    transferEnergy(target: Creep): ResultCode;
-    transferEnergy(target: Creep, amount: number): ResultCode;
-    transferEnergy(target: Structure): ResultCode;
-    transferEnergy(target: Structure, amount: number): ResultCode;
+    transferEnergy(target: Creep|Structure, amount?: number): ResultCode;
   }
 
   /**
@@ -382,8 +378,7 @@ declare module Screeps {
      * ERR_FULL => -8 : The target creep can not carry the given amount of energy.
      * ERR_NOT_IN_RANGE => -9 : The target creep is too far away.
      */
-    transferEnergy(target: Creep): ResultCode;
-    transferEnergy(target: Creep, amount: number): ResultCode;
+    transferEnergy(target: Creep, amount?: number): ResultCode;
   }
 
   /**
@@ -459,8 +454,7 @@ declare module Screeps {
      * ERR_NOT_IN_RANGE => -9 : The target is too far away.
      * ERR_INVALID_ARGS => -10 : The energy amount is incorrect.
      */
-    transfer(target: Creep, resourceType: ResourceType): ResultCode;
-    transfer(target: Creep, resourceType: ResourceType, amount: number): ResultCode;
+    transfer(target: Creep, resourceType: ResourceType, amount?: number): ResultCode;
 
     /**
      * An alias for storage.transfer(target, RESOURCE_ENERGY, amount). This method
@@ -477,8 +471,7 @@ declare module Screeps {
      * ERR_NOT_IN_RANGE => -9 : The target is too far away.
      * ERR_INVALID_ARGS => -10 : The energy amount is incorrect.
      */
-    transferEnergy(target: Creep): ResultCode;
-    transferEnergy(target: Creep, amount: number): ResultCode;
+    transferEnergy(target: Creep, amount?: number): ResultCode;
   }
 
   /**
@@ -548,8 +541,7 @@ declare module Screeps {
      * ERR_FULL => -8 : The target creep can not carry the given amount of energy.
      * ERR_NOT_IN_RANGE => -9 : The target creep is too far away.
      */
-    transferEnergy(target: Creep): ResultCode;
-    transferEnergy(target: Creep, amount: number): ResultCode;
+    transferEnergy(target: Creep, amount?: number): ResultCode;
   }
 
   /**
@@ -722,8 +714,7 @@ declare module Screeps {
      * ERR_NOT_IN_RANGE => -9 : The target is too far away.
      * ERR_NO_BODYPART => -12 : There are no ATTACK body parts in this creep’s body.
      */
-    attack(target: Creep): ResultCode;
-    attack(target: Structure): ResultCode;
+    attack(target: Creep|Structure): ResultCode;
 
     /**
      * Build a structure at the target construction site using carried energy. Requires WORK and CARRY body parts. The
@@ -793,8 +784,7 @@ declare module Screeps {
      * ERR_BUSY => -4 : The creep is still being spawned.
      * ERR_NOT_ENOUGH_RESOURCES => -6 : The creep does not have the given amount of energy.
      */
-    drop(resourceType: ResourceType): ResultCode;
-    drop(resourceType: ResourceType, amount: number): ResultCode;
+    drop(resourceType: ResourceType, amount?: number): ResultCode;
 
     /**
      * An alias for creep.drop(RESOURCE_ENERGY, amount). This method is deprecated.
@@ -891,10 +881,8 @@ declare module Screeps {
      * ERR_INVALID_TARGET => -7 : The target provided is invalid.
      * ERR_NO_PATH => -2 : No path to the target could be found.
      */
-    moveTo(x: number, y: number): ResultCode;
-    moveTo(x: number, y: number, opts: CreepPathfindingOpts): ResultCode;
-    moveTo(target: RoomPosition): ResultCode;
-    moveTo(target: RoomPosition, opts: CreepPathfindingOpts): ResultCode;
+    moveTo(x: number, y: number, opts?: CreepPathfindingOpts): ResultCode;
+    moveTo(target: RoomPosition, opts?: CreepPathfindingOpts): ResultCode;
 
     /**
      * Toggle auto notification when the creep is under attack. The notification will be sent to your account email.
@@ -933,8 +921,7 @@ declare module Screeps {
      * ERR_NOT_IN_RANGE => -9 : The target is too far away.
      * ERR_NO_BODYPART => -12 : There are no RANGED_ATTACK body parts in this creep’s body.
      */
-    rangedAttack(target: Creep): ResultCode;
-    rangedAttack(target: Structure): ResultCode;
+    rangedAttack(target: Creep|Structure): ResultCode;
 
     /**
      * Heal another creep at a distance. It will restore the target creep’s damaged body parts function and increase
@@ -1027,10 +1014,7 @@ declare module Screeps {
      * ERR_NOT_IN_RANGE => -9 : The target is too far away.
      * ERR_INVALID_ARGS => -10 : The energy amount is incorrect.
      */
-    transfer(target: Creep, resourceType: ResourceType): ResultCode;
-    transfer(target: Creep, resourceType: ResourceType, amount: number): ResultCode;
-    transfer(target: Structure, resourceType: ResourceType): ResultCode;
-    transfer(target: Structure, resourceType: ResourceType, amount: number): ResultCode;
+    transfer(target: Creep|Structure, resourceType: ResourceType, amount?: number): ResultCode;
 
     /**
      * An alias for creep.transfer(target, RESOURCE_ENERGY, amount). This method is deprecated.
@@ -1046,10 +1030,7 @@ declare module Screeps {
      * ERR_NOT_IN_RANGE => -9 : The target is too far away.
      * ERR_INVALID_ARGS => -10 : The energy amount is incorrect.
      */
-    transfer(target: Creep): ResultCode;
-    transfer(target: Creep, amount: number): ResultCode;
-    transfer(target: Structure): ResultCode;
-    transfer(target: Structure, amount: number): ResultCode;
+    transfer(target: Creep|Structure, amount?: number): ResultCode;
 
     /**
      * Upgrade your controller to the next level using carried energy. Upgrading controllers raises your Global
@@ -1149,16 +1130,263 @@ declare module Screeps {
      * List all exits available from the room with the given name.
      * @param roomName The room name.
      * @returns The exits information.
+     * TODO: Find a better way to describe the output of this function.
      */
-    describeExits(roomName: string): Object<Direction, string>;
+    describeExits(roomName: string): Object|void;
+    
+    /**
+     * Find the exit direction from the given room en route to another room.
+     * @param fromRoom Start room name or room object.
+     * @param toRoom Finish room name or room object.
+     * @returns The room direction constant or an error code:
+     * ERR_NO_PATH => -2 : Path can not be found.
+     * ERR_INVALID_ARGS => -10 : The location is incorrect.
+     */
+    findExit(fromRoom: string|Room, toRoom: string|Room): Direction|ResultCode;
+    
+    /**
+     * Find route from the given room to another room.
+     * @param fromRoom Start room name or room object.
+     * @param toRoom Finish room name or room object.
+     * @returns The route array or one of the following error code:
+     * ERR_NO_PATH => -2 : Path can not be found.
+     */
+    findRoute(fromRoom: string|Room, toRoom: string|Room): Array<RoomExit>|ResultCode;
+    
+    /**
+     * Check if the room with the given name is protected by temporary "newbie" walls.
+     * @param roomName The room name.
+     * @returns A boolean value.
+     */
+    isRoomProtected(roomName: string): boolean;
+  }
+  
+  /**
+   * RawMemory object allows to implement your own memory stringifier instead of built-in serializer based on
+   * JSON.stringify.
+   * http://support.screeps.com/hc/en-us/articles/203016642-Working-with-Memory
+   */
+  interface RawMemory {
+    /**
+     * Get a raw string representation of the Memory object.
+     * @returns Returns a string value.
+     */
+    get(): string;
+    
+    /**
+     * Set new memory value.
+     * @param value New memory value as a string.
+     */
+    set(value: string): void;
   }
 
+  /**
+   * A dropped piece of resource. It will decay after a while if not picked up. Dropped resource pile decays
+   * for ceil(amount/1000) units per tick. 
+   */
+  interface Resource {
+    /**
+     * The amount of resource units containing.
+     */
+    amount: number;
+
+    /**
+     * A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by
+     * its id.
+     */
+    id: string;
+
+    /**
+     * An object representing the position in the room.
+     */
+    pos: RoomPosition;
+
+    /**
+     * One of the RESOURCE_* constants.
+     */
+    resourceType: ResourceType;
+
+    /**
+     * The link to the Room object of this object.
+     */
+    room: Room;
+  }
+
+  /**
+   * An object representing the room in which your units and structures are in. It can be used to look around,
+   * find paths, etc. Every object in the room contains its linked Room instance in the room property.
+   */
   interface Room {
-
-  }
-
-  interface Spawn extends Structure {
-
+    /**
+     * The Controller structure of this room, if present, otherwise undefined.
+     */
+    controller: Controller;
+    
+    /**
+     * Total amount of energy available in all spawns and extensions in the room.
+     */
+    energyAvailable: number;
+    
+    /**
+     * Total amount of energyCapacity of all spawns and extensions in the room.
+     */
+    energyCapacityAvailable: number;
+    
+    /**
+     * A shorthand to Memory.rooms[room.name]. You can use it for quick access the room’s specific memory
+     * data object.
+     */
+    memory: Object;
+    
+    /**
+     * One of the game mode constants.
+     */
+    mode: GameMode;
+    
+    /**
+     * The name of the room.
+     */
+    name: string;
+    
+    /**
+     * The Storage structure of this room, if present, otherwise undefined.
+     */
+    storage: Structure|void;
+    
+    /**
+     * An object with survival game info.
+     */
+    survivalInfo: SurvivalInfo;
+    
+    /**
+     * Serialize a path array into a short string representation, which is suitable to store in memory.
+     * Todo: Function is actually static and found on the global Room object. No way to realy implement
+     * this in Typescript.
+     * @param path A path array retrieved from Room.findPath.
+     * http://support.screeps.com/hc/en-us/articles/203079011-Room#findPath
+     * @returns A serialized string form of the given path.
+     */
+    serializePath(path: Array<Path>): string;
+    
+    /**
+     * Deserialize a short string path representation into an array form.
+     * Todo: Function is actually static and found on the global Room object. No way to realy implement
+     * this in Typescript.
+     * @param path A serialized path string.
+     * @returns A path array.
+     * http://support.screeps.com/hc/en-us/articles/203079011-Room#findPath
+     */
+    serializePath(path: string): Array<Path>;
+    
+    /**
+     * Create new ConstructionSite at the specified location.
+     * @param x The X position.
+     * @param y The Y position.
+     * @param pos Can be a RoomPosition object or any object containing RoomPosition.
+     * @param structureType One of the STRUCTURE_* constants.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_INVALID_TARGET => -7 : The structure cannot be placed at the specified location.
+     * ERR_FULL => -8 : You have too many construction sites. The maximum number of construction sites per player is 100.
+     * ERR_INVALID_ARGS => -10 : The location is incorrect.
+     * ERR_RCL_NOT_ENOUGH => -14 : The Room Controller Level is not enough. Learn more
+     */
+    createConstructionSite(x: number, y: number, structureType: StructureType): ResultCode;
+    createConstructionSite(pos: RoomPosition, structureType: StructureType): ResultCode;
+    
+    /**
+     * Create new Flag at the specified location.
+     * @param x The X position.
+     * @param y The Y position.
+     * @param pos Can be a RoomPosition object or any object containing RoomPosition.
+     * @param name The name of a new flag. It should be unique, i.e. the Game.flags object should not contain
+     * another flag with the same name (hash key). If not defined, a random name will be generated.
+     * @param color The color of a new flag.
+     * @returns The name of a new flag, or one of the following error codes:
+     * ERR_NAME_EXISTS => -3 : There is a flag with the same name already.
+     * ERR_INVALID_ARGS => -10 : The location or the color constant is incorrect.
+     */
+    createFlag(x: number, y: number, name?: string, color?: Color): string|ResultCode;
+    createFlag(pos: RoomPosition, name?: string, color?: Color): string|ResultCode;
+    
+    /**
+     * Find all objects of the specified type in the room.
+     * @param type One of the room find constants.
+     * @param opts An object with additional options.
+     * @returns An array of the objects found.
+     */
+    find(type: RoomFind, opts?: RoomObjectfindingOpts): Array<Object>;
+    
+    /**
+     * Find the exit direction en route to another room.
+     * @param room Another room name or room object.
+     * @returns One of the room direction constant or one of the following error codes:
+     * ERR_NO_PATH => -2 : Path can not be found.
+     * ERR_INVALID_ARGS => -10 : The location is incorrect.
+     */
+    findExitTo(room: string|Room): ExitFind;
+    
+    /**
+     * Find an optimal path inside the room between fromPos and toPos using A* search algorithm.
+     * http://en.wikipedia.org/wiki/A*_search_algorithm
+     * @param fromPos The start position.
+     * @param toPos The end position.
+     * @param opts An object containing additonal pathfinding flags.
+     * @returns An array with path steps.
+     */
+    findPath(fromPos: RoomPosition, toPos: RoomPosition, opts?: RoomPathfindingOpts): Array<Path>;
+    
+    /**
+     * Creates a RoomPosition object at the specified location.
+     * @param x The X position.
+     * @param y The Y position.
+     * @returns A RoomPosition object or null if it cannot be obtained.
+     */
+    getPositionAt(x: number, y: number): RoomPosition|void;
+    
+    /**
+     * Get the list of objects at the specified room position.
+     * http://support.screeps.com/hc/en-us/articles/203079011-Room#lookAt
+     * @param x X position in the room.
+     * @param y Y position in the room.
+     * @param target Can be a RoomPosition object or any object containing RoomPosition.
+     * @returns An array with objects at the specified position.
+     */
+    lookAt(x: number, y: number): Array<Object>;
+    lookAt(target: RoomPosition): Array<Object>;
+    
+    /**
+     * Get the list of objects at the specified room area.
+     * http://support.screeps.com/hc/en-us/articles/203079011-Room#lookAtArea
+     * @param top The top Y boundary of the area.
+     * @param left The left X boundary of the area.
+     * @param bottom The bottom Y boundary of the area.
+     * @param right The right X boundary of the area.
+     * @returns An object with all the objects in the specified area.
+     */
+    lookAtArea(top: number, left: number, bottom: number, right: number): Object;
+    
+    /**
+     * Get an object with the given type at the specified room position.
+     * @param type One of the look for types.
+     * @param x X position in the room.
+     * @param y Y position in the room.
+     * @param target Can be a RoomPosition object or any object containing RoomPosition.
+     * @returns An array of objects of the given type at the specified position if found. 
+     */
+    lookForAt(type: LookForType, x: number, y: number): Array<Object>;
+    lookForAt(type: LookForType, target: RoomPosition): Array<Object>;
+    
+    /**
+     * Get the list of objects with the given type at the specified room area.
+     * @param type One of the look for types.
+     * @param top The top Y boundary of the area.
+     * @param left The left X boundary of the area.
+     * @param bottom The bottom Y boundary of the area.
+     * @param right The right X boundary of the area.
+     * @returns An object with all the objects of the given type in the specified area.
+     */
+    lookForAtArea(type: LookForType, top: number, left: number, bottom: number, right: number): Object;
   }
 
   interface RoomPosition {
@@ -1166,6 +1394,10 @@ declare module Screeps {
   }
 
   interface Source {
+
+  }
+
+  interface Spawn extends Structure {
 
   }
 
@@ -1283,33 +1515,30 @@ declare module Screeps {
      */
     direction: Direction;
   }
-
-  interface Resource {
+  
+  interface SurvivalInfo {
     /**
-     * The amount of resource units containing.
+     * Current score.
      */
-    amount: number;
-
+    score: number;
+    
     /**
-     * A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by
-     * its id.
+     * Time to the next wave of invaders.
      */
-    id: string;
-
+    timeToWave: number;
+    
     /**
-     * An object representing the position in the room.
+     * Number of the next wave.
      */
-    pos: RoomPosition;
-
-    /**
-     * One of the RESOURCE_* constants.
-     */
-    resourceType: ResourceType;
-
-    /**
-     * The link to the Room object of this object.
-     */
-    room: Room;
+    wave: number;
+  }
+  
+  /**
+   * Represents a single room exit route returned as part of an array in map.findRoute.
+   */
+  interface RoomExit {
+    exit: ExitFind;
+    room: string;
   }
 
   /**

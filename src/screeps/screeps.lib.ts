@@ -18,6 +18,13 @@ module Screeps {
     'ERR_GCL_NOT_ENOUGH' = -15
   }
   
+  export enum ExitFind {
+    'FIND_EXIT_TOP' = 1,
+    'FIND_EXIT_RIGHT' = 3,
+    'FIND_EXIT_BOTTOM' = 5,
+    'FIND_EXIT_LEFT' = 7
+  }
+  
   export enum RoomFind {
     'FIND_EXIT_TOP' = 1,
     'FIND_EXIT_RIGHT' = 3,
@@ -203,6 +210,44 @@ module Screeps {
     static RESOURCE_POWER = new ResourceType('power');
   }
   
+  export class GameMode {
+    value: string;
+
+    constructor(value: string) {
+      this.value = value;
+    }
+
+    toString(): string {
+      return this.value;
+    }
+
+    static MODE_SIMULATION = new GameMode('MODE_SIMULATION');
+    static MODE_SURVIVAL = new GameMode('MODE_SURVIVAL');
+    static MODE_WORLD = new GameMode('MODE_WORLD');
+    static MODE_ARENA = new GameMode('MODE_ARENA');
+  }
+  
+  export class LookForType {
+    value: string;
+
+    constructor(value: string) {
+      this.value = value;
+    }
+
+    toString(): string {
+      return this.value;
+    }
+
+    static CONSTRUCTION_SITE = new LookForType('constructionSite');
+    static CREEP = new LookForType('creep');
+    static EXIT = new LookForType('exit');
+    static FLAG = new LookForType('flag');
+    static RESOURCE = new LookForType('resource');
+    static SOURCE = new LookForType('source');
+    static STRUCTURE = new LookForType('structure');
+    static TERRAIN = new LookForType('terrain');
+  }
+  
   /**
    * An object containing pathfinding flags for room.findPath.
    */
@@ -273,5 +318,24 @@ module Screeps {
      * reuse. This can significantly save CPU time in some cases. The default value is false.
      */
     noPathFinding: boolean = false;
+  }
+  
+  /**
+   * An object containing object find options for the room interface.
+   */
+  export class RoomObjectfindingOpts {
+    /**
+     * The result list will be filtered using the Lodash.filter method.
+     */
+    filter: any;
+  }
+  
+  /**
+   * Cheat class to represent global room functions.
+   */
+  export class GlobalRoom {
+    public static serializePath(path: Array<Path>): string {
+      return '';
+    }
   }
 }
