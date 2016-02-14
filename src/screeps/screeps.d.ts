@@ -816,7 +816,258 @@ declare module Screeps {
      */
     getActiveBodyparts(type: BodyPart): number;
     
+    /**
+     * Harvest energy from the source. Requires the WORK body part. If the creep has an empty CARRY body part, the harvested
+     * energy is put into it; otherwise it is dropped on the ground. The target has to be at an adjacent square to the creep.
+     * @param target The source object to be harvested.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep, or the room controller is owned or reserved by another player.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_NOT_ENOUGH_RESOURCES => -6 : The target source does not contain any harvestable energy.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid source object.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_NO_BODYPART => -12 : There are no WORK body parts in this creep’s body.
+     */
+    harvest(target: Source): ResultCode;
     
+    /**
+     * Heal self or another creep. It will restore the target creep’s damaged body parts function and increase the hits
+     * counter. Requires the HEAL body part. The target has to be at adjacent square to the creep.
+     * @param target The target creep object.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid creep object.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.\
+     * ERR_NO_BODYPART => -12 : There are no HEAL body parts in this creep’s body.
+     */
+    heal(target: Creep): ResultCode;
+    
+    /**
+     * Move the creep one square in the specified direction. Requires the MOVE body part.
+     * @param direction One of the Direction enum values.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_TIRED => -11 : The fatigue indicator of the creep is non-zero.
+     * ERR_NO_BODYPART => -12 : There are no MOVE body parts in this creep’s body.
+     */
+    move(direction: Direction): ResultCode;
+    
+    /**
+     * Move the creep using the specified predefined path. Requires the MOVE body part.
+     * @param path A path value as returned from Room.findPath or RoomPosition.findPathTo methods. Both array
+     * form and serialized string form are accepted.
+     * http://support.screeps.com/hc/en-us/articles/203079011-Room#findPath
+     * http://support.screeps.com/hc/en-us/articles/203079201-RoomPosition#findPathTo
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_NOT_FOUND => -5 : The specified path doesn't match the creep's location.
+     * ERR_INVALID_ARGS => -10 : path is not a valid path array.
+     * ERR_TIRED => -11 : The fatigue indicator of the creep is non-zero.
+     * ERR_NO_BODYPART => -12 : There are no MOVE body parts in this creep’s body.
+     */
+    moveByPath(path: Array<Path>): ResultCode;
+    
+    /**
+     * Find the optimal path to the target within the same room and move to it. A shorthand to consequent calls of
+     * pos.findPathTo() and move() methods. If the target is in another room, then the corresponding exit will be
+     * used as a target. Requires the MOVE body part.
+     * @param x X position of the target in the room.
+     * @param y Y position of the target in the room.
+     * @param target Can be a RoomPosition object or any object containing RoomPosition.
+     * @param opts An object containing pathfinding options flags.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_TIRED => -11 : The fatigue indicator of the creep is non-zero.
+     * ERR_NO_BODYPART => -12 : There are no MOVE body parts in this creep’s body.
+     * ERR_INVALID_TARGET => -7 : The target provided is invalid.
+     * ERR_NO_PATH => -2 : No path to the target could be found.
+     */
+    moveTo(x: number, y: number): ResultCode;
+    moveTo(x: number, y: number, opts: CreepPathfindingOpts): ResultCode;
+    moveTo(target: RoomPosition): ResultCode;
+    moveTo(target: RoomPosition, opts: CreepPathfindingOpts): ResultCode;
+    
+    /**
+     * Toggle auto notification when the creep is under attack. The notification will be sent to your account email.
+     * Turned on by default.
+     * @param enable Whether to enable notification or disable.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_INVALID_ARGS => -10 : enable argument is not a boolean value.
+     */
+    notifyWhenAttacked(enabled: boolean): ResultCode;
+    
+    /**
+     * Pick up an item (a dropped piece of energy). Requires the CARRY body part. The target has to be at adjacent
+     * square to the creep or at the same square.
+     * @param target The target object to be picked up.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid object to pick up.
+     * ERR_FULL => -8 : The creep cannot receive any more energy.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     */
+    pickup(target: Resource): ResultCode;
+    
+    /**
+     * A ranged attack against another creep or structure. Requires the RANGED_ATTACK body part. If the target is
+     * inside a rampart, the rampart is attacked instead. The target has to be within 3 squares range of the creep.
+     * @param target The target object to be attacked.
+     * @returns One of the following codes:
+     * OK=> 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid attackable object.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_NO_BODYPART => -12 : There are no RANGED_ATTACK body parts in this creep’s body.
+     */
+    rangedAttack(target: Creep): ResultCode;
+    rangedAttack(target: Structure): ResultCode;
+    
+    /**
+     * Heal another creep at a distance. It will restore the target creep’s damaged body parts function and increase
+     * the hits counter. Requires the HEAL body part. The target has to be within 3 squares range of the creep.
+     * @param target The target creep object.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid creep object.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_NO_BODYPART => -12 : There are no HEAL body parts in this creep’s body.
+     */
+    rangedHeal(target: Creep): ResultCode;
+    
+    /**
+     * A ranged attack against all hostile creeps or structures within 3 squares range. Requires the RANGED_ATTACK
+     * body part. The attack power depends on the range to each target. Friendly units are not affected.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_NO_BODYPART => -12 : There are no RANGED_ATTACK body parts in this creep’s body.
+     */
+    rangedMassAttack(): ResultCode;
+    
+    /**
+     * Repair a damaged structure using carried energy. Requires the WORK and CARRY body parts. The target has to be
+     * within 3 squares range of the creep.
+     * @param target The target structure to be repaired.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_NOT_ENOUGH_RESOURCES => -6 : The creep does not carry any energy.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid creep object.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_NO_BODYPART => -12 : There are no WORK body parts in this creep’s body.
+     */
+    repair(target: Structure): ResultCode;
+    
+    /**
+     * Temporarily block a neutral controller from claiming by other players. Each tick, this command increases
+     * the counter of the period during which the controller is unavailable by 1 tick per each CLAIM body part.
+     * The maximum reservation period to maintain is 5,000 ticks. The target has to be at adjacent square to the
+     * creep.
+     * @param target The target controller object to be reserved.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid neutral controller object.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_NO_BODYPART => -12 : There are no CLAIM body parts in this creep’s body.
+     */
+    reserveController(target: Controller): ResultCode;
+    
+    /**
+     * Display a visual speech balloon above the creep with the specified message. The message will disappear
+     * after a few seconds. Useful for debugging purposes. Only the creep's owner can see the speech message.
+     * @param message The message to be displayed. Maximum length is 10 characters.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     */
+    say(message: string): ResultCode;
+    
+    /**
+     * Kill the creep immediately.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     */
+    suicide(): ResultCode;
+    
+    /**
+     * Transfer resource from the creep to another object. The target has to be at adjacent square to the creep.
+     * @param target The target object.
+     * @param resourceType One of the RESOURCE_* constants.
+     * @param amount The amount of resources to be transferred. If omitted, all the available carried amount is used.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_NOT_ENOUGH_RESOURCES => -6 : The creep does not have the given amount of energy.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid object which can contain energy.
+     * ERR_FULL => -8 : The target cannot receive any more energy.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_INVALID_ARGS => -10 : The energy amount is incorrect.
+     */
+    transfer(target: Creep, resourceType: ResourceType): ResultCode;
+    transfer(target: Creep, resourceType: ResourceType, amount: number): ResultCode;
+    transfer(target: Structure, resourceType: ResourceType): ResultCode;
+    transfer(target: Structure, resourceType: ResourceType, amount: number): ResultCode;
+    
+    /**
+     * An alias for creep.transfer(target, RESOURCE_ENERGY, amount). This method is deprecated.
+     * @param target The target object.
+     * @param amount The amount of resources to be transferred. If omitted, all the available carried amount is used.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_NOT_ENOUGH_RESOURCES => -6 : The creep does not have the given amount of energy.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid object which can contain energy.
+     * ERR_FULL => -8 : The target cannot receive any more energy.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_INVALID_ARGS => -10 : The energy amount is incorrect.
+     */
+    transfer(target: Creep): ResultCode;
+    transfer(target: Creep, amount: number): ResultCode;
+    transfer(target: Structure): ResultCode;
+    transfer(target: Structure, amount: number): ResultCode;
+    
+    /**
+     * Upgrade your controller to the next level using carried energy. Upgrading controllers raises your Global
+     * Control Level in parallel. Requires WORK and CARRY body parts. The target has to be at adjacent square to
+     * the creep. A fully upgraded level 8 controller can't be upgraded with the power over 15 energy units per
+     * tick regardless of creeps power. The cumulative effect of all the creeps performing upgradeController in
+     * the current tick is taken into account.
+     * @param target The target controller object to be upgraded.
+     * @returns One of the following codes:
+     * OK => 0 : The operation has been scheduled successfully.
+     * ERR_NOT_OWNER => -1 : You are not the owner of this creep.
+     * ERR_BUSY => -4 : The creep is still being spawned.
+     * ERR_NOT_ENOUGH_RESOURCES => -6 : The creep does not have any carried energy.
+     * ERR_INVALID_TARGET => -7 : The target is not a valid controller object.
+     * ERR_NOT_IN_RANGE => -9 : The target is too far away.
+     * ERR_NO_BODYPART => -12 : There are no WORK body parts in this creep’s body.
+     */
+    upgradeController(target: Controller): ResultCode;
   }
 
   interface Flag {
@@ -837,6 +1088,10 @@ declare module Screeps {
 
   interface RoomPosition {
 
+  }
+  
+  interface Source {
+    
   }
 
   /**
@@ -922,6 +1177,64 @@ declare module Screeps {
      * The amount of power resource units if present, undefined otherwise.
      */
     power: number|void;
+  }
+  
+  /**
+   * Depicts a single path step typeically used in an array to provide a path for a creep to move.
+   */
+  interface Path {
+    /**
+     * x position starting point.
+     */
+    x: number;
+    
+    /**
+     * y position starting point.
+     */
+    y: number;
+    
+    /**
+     * x position spaces to move.
+     */
+    dx: number;
+    
+    /**
+     * y position spaces to move.
+     */
+    dy: number;
+    
+    /**
+     * Direction to move.
+     */
+    direction: Direction;
+  }
+  
+  interface Resource {
+    /**
+     * The amount of resource units containing.
+     */
+    amount: number;
+    
+    /**
+     * A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by
+     * its id.
+     */
+    id: string;
+    
+    /**
+     * An object representing the position in the room.
+     */
+    pos: RoomPosition;
+    
+    /**
+     * One of the RESOURCE_* constants.
+     */
+    resourceType: ResourceType;
+    
+    /**
+     * The link to the Room object of this object.
+     */
+    room: Room;
   }
 
   /**

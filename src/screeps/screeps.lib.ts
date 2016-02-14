@@ -202,4 +202,76 @@ module Screeps {
     static RESOURCE_ENERGY = new ResourceType('energy');
     static RESOURCE_POWER = new ResourceType('power');
   }
+  
+  /**
+   * An object containing pathfinding flags for room.findPath.
+   */
+  export class RoomPathfindingOpts {
+    /**
+     * Treat squares with creeps as walkable. Can be useful with too many moving creeps around or in some other
+     * cases. The default value is false.
+     */
+    ignoreCreeps: boolean = false;
+    
+    /**
+     * Treat squares with destructible structures (constructed walls, ramparts, spawns, extensions) as walkable.
+     * Use this flag when you need to move through a territory blocked by hostile structures. If a creep with an
+     * ATTACK body part steps on such a square, it automatically attacks the structure. The default value is false.
+     */
+    ignoreDestructibleStructures: boolean = false;
+    
+    /**
+     * An array of the room's objects or RoomPosition objects which should be treated as walkable tiles during the search.
+     */
+    ignore: Array<Structure>|Array<RoomPosition> = [];
+    
+    /**
+     * An array of the room's objects or RoomPosition objects which should be treated as obstacles during the search.
+     */
+    avoid: Array<Structure>|Array<RoomPosition> = [];
+    
+    /**
+     * The maximum limit of possible pathfinding operations. The greater the value, the more accurate path will be found,
+     * but more CPU time could be used. The default value is 2000.
+     */
+    maxOps: number = 2000;
+    
+    /**
+     * Weight to apply to the heuristic to allow for suboptimal paths (for example, not using the roads or going through
+     * swamps), in order to speed up the search. Set any large value (say, 1000) in order to ignore terrain costs. The
+     * default value is 1.
+     */
+    heuristicWeight: number = 1;
+    
+    /**
+     * If true, the result path will be serialized using Room.serializePath. The default is false.
+     */
+    serialize: boolean = false;
+  }
+  
+  /**
+   * An object containing pathfinding flags for creep.moveTo in addition to room.findPath.
+   */
+  export class CreepPathfindingOpts extends RoomPathfindingOpts {
+    /**
+     * This option enables reusing the path found along multiple game ticks. It allows to save CPU time, but can
+     * result in a slightly slower creep reaction behavior. The path is stored into the creep's memory to the
+     * _move property. The reusePath value defines the amount of ticks which the path should be reused for. The
+     * default value is 5. Increase the amount to save more CPU, decrease to make the movement more consistent.
+     * Set to 0 if you want to disable path reusing.
+     */
+    reusePath: number = 5;
+    
+    /**
+     * If reusePath is enabled and this option is set to true, the path will be stored in memory in the short
+     * serialized form using Room.serializePath. The default value is true.
+     */
+    serializeMemory: boolean = true;
+    
+    /**
+     * If this option is set to true, moveTo method will return ERR_NOT_FOUND if there is no memorized path to
+     * reuse. This can significantly save CPU time in some cases. The default value is false.
+     */
+    noPathFinding: boolean = false;
+  }
 }
