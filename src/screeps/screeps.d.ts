@@ -130,7 +130,7 @@ declare module Screeps {
      * One of the STRUCTURE_* constants.
      */
     structureType: StructureType;
-    
+
     /**
      * Destroy this structure immediately. You are not allowed to destroy a structure
      * when there are hostile creeps in the room.
@@ -139,7 +139,7 @@ declare module Screeps {
      * ERR_NOT_OWNER => -1 : You are not the owner of this structure.
      */
     destroy(): ResultCode;
-    
+
     /**
      * Toggle auto notification when the structure is under attack. The notification
      * will be sent to your account email. Turned on by default.
@@ -151,7 +151,7 @@ declare module Screeps {
      */
     notifyWhenAttacked(enabled: boolean): ResultCode;
   }
-  
+
   /**
    * Claim this structure to take control over the room.
    */
@@ -160,29 +160,29 @@ declare module Screeps {
      * Current controller level, from 0 to 8.
      */
     level: number;
-    
+
     /**
      * The current progress of upgrading the controller to the next level.
      */
     progress: number;
-    
+
     /**
      * The progress needed to reach the next level.
      */
     progressTotal: number;
-    
+
     /**
      * An object with the controller reservation info if present.
      */
     reservation: Reservation;
-    
+
     /**
      * The amount of game ticks when this controller will lose one level. This timer
      * can be reset by using Creep.upgradeController.
      * http://support.screeps.com/hc/en-us/articles/203013212-Creep#upgradeController
      */
     ticksToDowngrade: number;
-    
+
     /**
      * Make your claimed controller neutral again.
      * @returns One of the following codes:
@@ -191,7 +191,7 @@ declare module Screeps {
      */
     unclaim(): ResultCode;
   }
-  
+
   /**
    * Contains up to 50 energy units which can be spent on spawning bigger creeps.
    * Controller level: 2
@@ -204,12 +204,12 @@ declare module Screeps {
      * The amount of energy containing in the extension.
      */
     energy: number;
-    
+
     /**
      * The total amount of energy the extension can contain.
      */
     energyCapacity: number;
-    
+
     /**
      * Transfer the energy from the extension to a creep.
      * @param target The creep object which energy should be transferred to.
@@ -226,7 +226,7 @@ declare module Screeps {
     transferEnergy(target: Creep): ResultCode;
     transferEnergy(target: Creep, amount: number): ResultCode;
   }
-  
+
   /**
    * Non-player structure. Spawns source keepers.
    * Controller level: --
@@ -240,7 +240,7 @@ declare module Screeps {
      */
     ticksToSpawn: number;
   }
-  
+
   /**
    * Remotely transfers up to 500 energy to another Link. Cooldown period equals to 1 tick per tile
    * of the linear distance to the target.
@@ -254,17 +254,17 @@ declare module Screeps {
      * The amount of game ticks the link has to wait until the next transfer is possible.
      */
     cooldown: number;
-    
+
     /**
      * The amount of energy containing in the link.
      */
     energy: number;
-    
+
     /**
      * The total amount of energy the link can contain.
      */
     energyCapacity: number;
-    
+
     /**
      * Transfer energy from the link to another link or a creep. If the target is a
      * creep, it has to be at adjacent square to the link. If the target is a link,
@@ -289,7 +289,7 @@ declare module Screeps {
     transferEnergy(target: Structure): ResultCode;
     transferEnergy(target: Structure, amount: number): ResultCode;
   }
-  
+
   /**
    * 	Provides visibility into a distant room from your script.
    * Controller level: 8
@@ -305,7 +305,7 @@ declare module Screeps {
      */
     observeRoom(roomName: string): ResultCode;
   }
-  
+
   /**
    * Non-player structure. Contains power resource.
    * Controller level: --
@@ -318,13 +318,13 @@ declare module Screeps {
      * The amount of power containing.
      */
     power: number;
-    
+
     /**
      * The amount of game ticks when this structure will disappear.
      */
     ticksToDecay: number;
   }
-  
+
   /**
    * Spawns power creeps with special unique powers.
    * Controller level: 8
@@ -337,27 +337,27 @@ declare module Screeps {
      * The amount of energy containing in this structure.
      */
     energy: number;
-    
+
     /**
      * The total amount of energy this structure can contain.
      */
     energyCapacity: number;
-    
+
     /**
      * The amount of power containing in this structure.
      */
     power: number;
-    
+
     /**
      * The total amount of power this structure can contain.
      */
     powerCapacity: number;
-    
+
     /**
      * Create a power creep. This method is under development.
      */
     createPowerCreep(name: string): ResultCode;
-    
+
     /**
      * Register power resource units into your account. Registered power allows to
      * develop power creeps skills. Consumes 1 power resource unit and 50 energy
@@ -368,7 +368,7 @@ declare module Screeps {
      * ERR_RCL_NOT_ENOUGH => -14 : The Room Controller Level is not enough to use this structure.
      */
     processPower(): ResultCode;
-    
+
     /**
      * Transfer the energy from this structure to a creep.
      * @param target The creep object which energy should be transferred to.
@@ -385,7 +385,7 @@ declare module Screeps {
     transferEnergy(target: Creep): ResultCode;
     transferEnergy(target: Creep, amount: number): ResultCode;
   }
-  
+
   /**
    * Blocks movement of hostile creeps, and defends your creeps and structures. Decays for 300 hits per
    * 100 game ticks. Ramparts max hits depend on Controller Level.
@@ -400,7 +400,7 @@ declare module Screeps {
      */
     ticksToDecay: number;
   }
-  
+
   /**
    * Road at plain land:
    * Decreases movement cost to 1. Decays for 100 hits per 1000 ticks.
@@ -408,14 +408,14 @@ declare module Screeps {
    * Cost: 300
    * Hits when created: 5,000
    * Max hits: 5,000
-   * 
+   *
    * Road at swamp:
    * Decreases movement cost to 1. Decays for 500 hits per 1000 ticks.
    * Controller level: --
    * Cost: 1,500
    * Hits when created: 25,000
    * Max hits: 25,000
-   * 
+   *
    * Every creep step decreases the decay timer for 1 tick per each creep body part.
    */
   interface Road extends Structure {
@@ -424,7 +424,7 @@ declare module Screeps {
      */
     ticksToDecay: number;
   }
-  
+
   /**
    * Stores up to 1M resource units.
    * Controller level: 4
@@ -437,12 +437,12 @@ declare module Screeps {
      * An object with the storage contents.
      */
     store: Store;
-    
+
     /**
      * The total amount of resources the storage can contain.
      */
     storeCapacity: number;
-    
+
     /**
      * Transfer resource from this storage to a creep. The target has to
      * be at adjacent square.
@@ -461,7 +461,7 @@ declare module Screeps {
      */
     transfer(target: Creep, resourceType: ResourceType): ResultCode;
     transfer(target: Creep, resourceType: ResourceType, amount: number): ResultCode;
-  
+
     /**
      * An alias for storage.transfer(target, RESOURCE_ENERGY, amount). This method
      * is deprecated.
@@ -480,7 +480,7 @@ declare module Screeps {
     transferEnergy(target: Creep): ResultCode;
     transferEnergy(target: Creep, amount: number): ResultCode;
   }
-  
+
   /**
    * Remotely attacks or heals any creep in a room, or repairs a structure.
    * Controller level: 3
@@ -493,12 +493,12 @@ declare module Screeps {
      * The amount of energy containing in this structure.
      */
     energy: number;
-    
+
     /**
      * The total amount of energy this structure can contain.
      */
     energyCapacity: number;
-    
+
     /**
      * Remotely attack any creep in the room. Consumes 10 energy units per tick. Attack power
      * depends on the distance to the target: from 600 hits at range 5 to 150 hits at range 20.
@@ -510,7 +510,7 @@ declare module Screeps {
      * ERR_RCL_NOT_ENOUGH => -14 : The Room Controller Level is not enough to use this structure.
      */
     attach(target: Creep): ResultCode;
-    
+
     /**
      * Remotely heal any creep in the room. Consumes 10 energy units per tick. Heal power depends on
      * the distance to the target: from 400 hits at range 5 to 100 hits at range 20.
@@ -522,7 +522,7 @@ declare module Screeps {
      * ERR_RCL_NOT_ENOUGH => -14 : The Room Controller Level is not enough to use this structure.
      */
     heal(target: Creep): ResultCode;
-    
+
     /**
      * Remotely repair any structure in the room. Consumes 10 energy units per tick. Repair power depends
      * on the distance to the target: from 800 hits at range 5 to 200 hits at range 20.
@@ -534,7 +534,7 @@ declare module Screeps {
      * ERR_RCL_NOT_ENOUGH => -14 : The Room Controller Level is not enough to use this structure.
      */
     repair(target: Structure): ResultCode;
-  
+
     /**
      * Transfer energy from the structure to a creep.
      * @param target The creep object which energy should be transferred to.
@@ -551,7 +551,7 @@ declare module Screeps {
     transferEnergy(target: Creep): ResultCode;
     transferEnergy(target: Creep, amount: number): ResultCode;
   }
-  
+
   /**
    * Blocks movement of all creeps.
    * Controller level: 2
@@ -566,7 +566,7 @@ declare module Screeps {
      */
     ticksToLive: number;
   }
-  
+
   /**
    * A site of a structure which is currently under construction. A construction site can be created using
    * the 'Construct' button at the left of the game field or the Room.createConstructionSite() method. To build
@@ -579,42 +579,42 @@ declare module Screeps {
      * http://support.screeps.com/hc/en-us/articles/203016382-Game#getObjectById
      */
     id: string;
-    
+
     /**
      * Whether this is your own construction site.
      */
     my: boolean;
-    
+
     /**
      * An object with the structure’s owner info.
      */
     owner: Owner;
-    
+
     /**
      * An object representing the position of this structure in the room.
      */
     pos: RoomPosition;
-    
+
     /**
      * The current construction progress.
      */
     progress: number;
-    
+
     /**
      * The total construction progress needed for the structure to be built.
      */
     progressTotal: number;
-    
+
     /**
      * The link to the Room object of this structure.
      */
     room: Room;
-    
+
     /**
      * One of the STRUCTURE_* constants.
      */
     structureType: StructureType;
-    
+
     /**
      * Remove the construction site.
      * @returns One of the following codes:
@@ -633,81 +633,81 @@ declare module Screeps {
      * An array describing the creep’s body.
      */
     body: Array<BodyPart>;
-    
+
     /**
      * An object with the creep's cargo contents.
      */
     carry: Store;
-    
+
     /**
      * The total amount of resources the creep can carry.
      */
     carryCapacity: number;
-    
+
     /**
      * The movement fatigue indicator. If it is greater than zero, the creep cannot move.
      */
     fatigue: number;
-    
+
     /**
      * The current amount of hit points of the creep.
      */
     hits: number;
-    
+
     /**
      * The maximum amount of hit points of the creep.
      */
     hitsMax: number;
-    
+
     /**
      * A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.
      * http://support.screeps.com/hc/en-us/articles/203016382-Game#getObjectById
      */
     id: string;
-    
+
     /**
      * A shorthand to Memory.creeps[creep.name]. You can use it for quick access the creep’s specific memory data object.
      * Note: you can't access the memory property of the creep object which has been just scheduled to spawn, but you still
      * can write its memory like that
      */
     memory: Object;
-    
+
     /**
      * Whether it is your creep or foe.
      */
     my: boolean;
-    
+
     /**
      * Creep’s name. You can choose the name while creating a new creep, and it cannot be changed later. This name is a hash key
      * to access the creep via the Game.creeps object.
      */
     name: string;
-    
+
     /**
      * An object with the creep’s owner info.
      */
     owner: Owner;
-    
+
     /**
      * An object representing the position of this creep in a room.
      */
     pos: RoomPosition;
-    
+
     /**
      * The link to the Room object of this creep.
      */
     room: Room;
-    
+
     /**
      * Whether this creep is still being spawned.
      */
     spawning: boolean;
-    
+
     /**
      * The remaining amount of game ticks after which the creep will die.
      */
     ticksToLive: number;
-    
+
     /**
      * Attack another creep or structure in a short-ranged attack. Requires the ATTACK body part. If the target is
      * inside a rampart, then the rampart is attacked instead. The target has to be at adjacent square to the creep.
@@ -724,7 +724,7 @@ declare module Screeps {
      */
     attack(target: Creep): ResultCode;
     attack(target: Structure): ResultCode;
-    
+
     /**
      * Build a structure at the target construction site using carried energy. Requires WORK and CARRY body parts. The
      * target has to be within 3 squares range of the creep.
@@ -741,7 +741,7 @@ declare module Screeps {
      * ERR_RCL_NOT_ENOUGH => -14 : The Room Controller Level is not enough. Learn more
      */
     build(target: ConstructionSite): ResultCode;
-    
+
     /**
      * Cancel the order given during the current game tick.
      * @param methodName The name of a creep's method to be cancelled.
@@ -750,7 +750,7 @@ declare module Screeps {
      * ERR_NOT_FOUND => -5 : The order with the specified name is not found.
      */
     cancelOrder(methodName: string): ResultCode;
-    
+
     /**
      * Requires the CLAIM body part. If applied to a neutral controller, claims it under your control. If applied to a
      * hostile controller, decreases its downgrade or reservation timer depending on the CLAIM body parts count. The
@@ -767,7 +767,7 @@ declare module Screeps {
      * ERR_GCL_NOT_ENOUGH => -15 : Your Global Control Level is not enough. Learn more
      */
     claimController(target: Controller): ResultCode;
-    
+
     /**
      * Dismantles any (even hostile) structure returning 50% of the energy spent on its repair. Requires the WORK body
      * part. If the creep has an empty CARRY body part, the energy is put into it; otherwise it is dropped on the ground.
@@ -782,7 +782,7 @@ declare module Screeps {
      * ERR_NO_BODYPART => -12 : There are no WORK body parts in this creep’s body.
      */
     dismantle(target: Structure): ResultCode;
-    
+
     /**
      * Drop this resource on the ground.
      * @param resopurceType One of the RESOURCE_* constants.
@@ -795,7 +795,7 @@ declare module Screeps {
      */
     drop(resourceType: ResourceType): ResultCode;
     drop(resourceType: ResourceType, amount: number): ResultCode;
-    
+
     /**
      * An alias for creep.drop(RESOURCE_ENERGY, amount). This method is deprecated.
      * @param resopurceType One of the RESOURCE_* constants.
@@ -808,14 +808,14 @@ declare module Screeps {
      */
     dropEnergy(): ResultCode;
     dropEnergy(amount: number): ResultCode;
-    
+
     /**
      * Get the quantity of live body parts of the given type. Fully damaged parts do not count.
      * @param type A body part type.
      * @returns A number representing the quantity of body parts.
      */
     getActiveBodyparts(type: BodyPart): number;
-    
+
     /**
      * Harvest energy from the source. Requires the WORK body part. If the creep has an empty CARRY body part, the harvested
      * energy is put into it; otherwise it is dropped on the ground. The target has to be at an adjacent square to the creep.
@@ -830,7 +830,7 @@ declare module Screeps {
      * ERR_NO_BODYPART => -12 : There are no WORK body parts in this creep’s body.
      */
     harvest(target: Source): ResultCode;
-    
+
     /**
      * Heal self or another creep. It will restore the target creep’s damaged body parts function and increase the hits
      * counter. Requires the HEAL body part. The target has to be at adjacent square to the creep.
@@ -844,7 +844,7 @@ declare module Screeps {
      * ERR_NO_BODYPART => -12 : There are no HEAL body parts in this creep’s body.
      */
     heal(target: Creep): ResultCode;
-    
+
     /**
      * Move the creep one square in the specified direction. Requires the MOVE body part.
      * @param direction One of the Direction enum values.
@@ -856,7 +856,7 @@ declare module Screeps {
      * ERR_NO_BODYPART => -12 : There are no MOVE body parts in this creep’s body.
      */
     move(direction: Direction): ResultCode;
-    
+
     /**
      * Move the creep using the specified predefined path. Requires the MOVE body part.
      * @param path A path value as returned from Room.findPath or RoomPosition.findPathTo methods. Both array
@@ -873,7 +873,7 @@ declare module Screeps {
      * ERR_NO_BODYPART => -12 : There are no MOVE body parts in this creep’s body.
      */
     moveByPath(path: Array<Path>): ResultCode;
-    
+
     /**
      * Find the optimal path to the target within the same room and move to it. A shorthand to consequent calls of
      * pos.findPathTo() and move() methods. If the target is in another room, then the corresponding exit will be
@@ -895,7 +895,7 @@ declare module Screeps {
     moveTo(x: number, y: number, opts: CreepPathfindingOpts): ResultCode;
     moveTo(target: RoomPosition): ResultCode;
     moveTo(target: RoomPosition, opts: CreepPathfindingOpts): ResultCode;
-    
+
     /**
      * Toggle auto notification when the creep is under attack. The notification will be sent to your account email.
      * Turned on by default.
@@ -906,7 +906,7 @@ declare module Screeps {
      * ERR_INVALID_ARGS => -10 : enable argument is not a boolean value.
      */
     notifyWhenAttacked(enabled: boolean): ResultCode;
-    
+
     /**
      * Pick up an item (a dropped piece of energy). Requires the CARRY body part. The target has to be at adjacent
      * square to the creep or at the same square.
@@ -920,7 +920,7 @@ declare module Screeps {
      * ERR_NOT_IN_RANGE => -9 : The target is too far away.
      */
     pickup(target: Resource): ResultCode;
-    
+
     /**
      * A ranged attack against another creep or structure. Requires the RANGED_ATTACK body part. If the target is
      * inside a rampart, the rampart is attacked instead. The target has to be within 3 squares range of the creep.
@@ -935,7 +935,7 @@ declare module Screeps {
      */
     rangedAttack(target: Creep): ResultCode;
     rangedAttack(target: Structure): ResultCode;
-    
+
     /**
      * Heal another creep at a distance. It will restore the target creep’s damaged body parts function and increase
      * the hits counter. Requires the HEAL body part. The target has to be within 3 squares range of the creep.
@@ -949,7 +949,7 @@ declare module Screeps {
      * ERR_NO_BODYPART => -12 : There are no HEAL body parts in this creep’s body.
      */
     rangedHeal(target: Creep): ResultCode;
-    
+
     /**
      * A ranged attack against all hostile creeps or structures within 3 squares range. Requires the RANGED_ATTACK
      * body part. The attack power depends on the range to each target. Friendly units are not affected.
@@ -960,7 +960,7 @@ declare module Screeps {
      * ERR_NO_BODYPART => -12 : There are no RANGED_ATTACK body parts in this creep’s body.
      */
     rangedMassAttack(): ResultCode;
-    
+
     /**
      * Repair a damaged structure using carried energy. Requires the WORK and CARRY body parts. The target has to be
      * within 3 squares range of the creep.
@@ -975,7 +975,7 @@ declare module Screeps {
      * ERR_NO_BODYPART => -12 : There are no WORK body parts in this creep’s body.
      */
     repair(target: Structure): ResultCode;
-    
+
     /**
      * Temporarily block a neutral controller from claiming by other players. Each tick, this command increases
      * the counter of the period during which the controller is unavailable by 1 tick per each CLAIM body part.
@@ -991,7 +991,7 @@ declare module Screeps {
      * ERR_NO_BODYPART => -12 : There are no CLAIM body parts in this creep’s body.
      */
     reserveController(target: Controller): ResultCode;
-    
+
     /**
      * Display a visual speech balloon above the creep with the specified message. The message will disappear
      * after a few seconds. Useful for debugging purposes. Only the creep's owner can see the speech message.
@@ -1002,7 +1002,7 @@ declare module Screeps {
      * ERR_BUSY => -4 : The creep is still being spawned.
      */
     say(message: string): ResultCode;
-    
+
     /**
      * Kill the creep immediately.
      * @returns One of the following codes:
@@ -1011,7 +1011,7 @@ declare module Screeps {
      * ERR_BUSY => -4 : The creep is still being spawned.
      */
     suicide(): ResultCode;
-    
+
     /**
      * Transfer resource from the creep to another object. The target has to be at adjacent square to the creep.
      * @param target The target object.
@@ -1031,7 +1031,7 @@ declare module Screeps {
     transfer(target: Creep, resourceType: ResourceType, amount: number): ResultCode;
     transfer(target: Structure, resourceType: ResourceType): ResultCode;
     transfer(target: Structure, resourceType: ResourceType, amount: number): ResultCode;
-    
+
     /**
      * An alias for creep.transfer(target, RESOURCE_ENERGY, amount). This method is deprecated.
      * @param target The target object.
@@ -1050,7 +1050,7 @@ declare module Screeps {
     transfer(target: Creep, amount: number): ResultCode;
     transfer(target: Structure): ResultCode;
     transfer(target: Structure, amount: number): ResultCode;
-    
+
     /**
      * Upgrade your controller to the next level using carried energy. Upgrading controllers raises your Global
      * Control Level in parallel. Requires WORK and CARRY body parts. The target has to be at adjacent square to
@@ -1078,45 +1078,45 @@ declare module Screeps {
      * A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by its id.
      */
     id: string;
-    
+
     /**
      * Flag color.
      */
     color: Color;
-    
+
     /**
      * A shorthand to Memory.flags[flag.name]. You can use it for quick access the flag's specific memory data object.
      */
     memory: Object;
-    
+
     /**
      * Flag’s name. You can choose the name while creating a new flag, and it cannot be changed later. This name is a
      * hash key to access the spawn via the Game.flags object.
      */
     name: string;
-    
+
     /**
      * An object representing the position of this structure in the room.
      */
     pos: RoomPosition;
-    
+
     /**
      * The link to the Room object. May not be available in case a flag is placed in a room which you do not have access to.
      */
     room: Room;
-    
+
     /**
      * The name of the room in which this flag is in. This property is deprecated and will be removed soon. Use pos.roomName instead.
      */
     roomName: string;
-    
+
     /**
      * Remove the flag.
      * @returns s One of the following codes:
      * OK => 0 : The operation has been scheduled successfully.
      */
     remove(): ResultCode;
-    
+
     /**
      * Set new color of the flag.
      * @param color One of the color contants.
@@ -1125,7 +1125,7 @@ declare module Screeps {
      * ERR_INVALID_ARGS => -10 : color is not a valid color constant.
      */
     setColor(color: Color): ResultCode;
-    
+
     /**
      * Set new position of the flag.
      * @param x The X position in the room.
@@ -1139,8 +1139,18 @@ declare module Screeps {
     setPosition(pos: RoomPosition): ResultCode;
   }
 
+  /**
+   * A global object representing world map. Use it to navigate between rooms. The
+   * object is accessible via Game.map property.
+   * http://support.screeps.com/hc/en-us/articles/203016382-Game#map
+   */
   interface Map {
-
+    /**
+     * List all exits available from the room with the given name.
+     * @param roomName The room name.
+     * @returns The exits information.
+     */
+    describeExits(roomName: string): Object<Direction, string>;
   }
 
   interface Room {
@@ -1154,9 +1164,9 @@ declare module Screeps {
   interface RoomPosition {
 
   }
-  
+
   interface Source {
-    
+
   }
 
   /**
@@ -1213,7 +1223,7 @@ declare module Screeps {
      */
     username: string;
   }
-  
+
   /**
    * An object with the controller reservation info if present.
    */
@@ -1222,13 +1232,13 @@ declare module Screeps {
      * The name of a player who reserved this controller.
      */
     username: string;
-    
+
     /**
      * The amount of game ticks when the reservation will end.
      */
     ticksToEnd: number;
   }
-  
+
   /**
    * An object with the storage contents.
    */
@@ -1237,13 +1247,13 @@ declare module Screeps {
      * The amount of energy resource units.
      */
     energy: number;
-    
+
     /**
      * The amount of power resource units if present, undefined otherwise.
      */
     power: number|void;
   }
-  
+
   /**
    * Depicts a single path step typeically used in an array to provide a path for a creep to move.
    */
@@ -1252,50 +1262,50 @@ declare module Screeps {
      * x position starting point.
      */
     x: number;
-    
+
     /**
      * y position starting point.
      */
     y: number;
-    
+
     /**
      * x position spaces to move.
      */
     dx: number;
-    
+
     /**
      * y position spaces to move.
      */
     dy: number;
-    
+
     /**
      * Direction to move.
      */
     direction: Direction;
   }
-  
+
   interface Resource {
     /**
      * The amount of resource units containing.
      */
     amount: number;
-    
+
     /**
      * A unique object identificator. You can use Game.getObjectById method to retrieve an object instance by
      * its id.
      */
     id: string;
-    
+
     /**
      * An object representing the position in the room.
      */
     pos: RoomPosition;
-    
+
     /**
      * One of the RESOURCE_* constants.
      */
     resourceType: ResourceType;
-    
+
     /**
      * The link to the Room object of this object.
      */
@@ -1306,6 +1316,6 @@ declare module Screeps {
    * Represents a hash table maping some object type to a string key.
    */
   interface HashTable<T> {
-    [key: string]: T
+    [key: string]: T;
   }
 }
